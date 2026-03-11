@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workshops — Jessica K. Art</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #1a1612;
+      --cream:  #f8f4ee;
+      --warm:   #e8ddd0;
+      --gold:   #c9a84c;
+      --teal:   #3d8b8b;
+      --rust:   #c4613a;
+      --plum:   #7b4f6e;
+      --sky:    #5b9bbf;
+      --muted:  #7a7068;
+      --lime:   #7daa5a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(248,244,238,0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rust); font-style: italic; }
+    nav ul { list-style: none; display: flex; gap: 2.5rem; }
+    nav a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--rust); }
+
+    /* ── HERO ── */
+    .ws-hero {
+      min-height: 62vh;
+      padding-top: 5rem;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Paint splatter SVG blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .blob-1 { width: 420px; height: 420px; background: var(--rust);  top: -80px;  left: -100px; }
+    .blob-2 { width: 340px; height: 340px; background: var(--teal);  bottom: -60px; right: -60px; }
+    .blob-3 { width: 260px; height: 260px; background: var(--gold);  top: 40%;  left: 55%; }
+    .blob-4 { width: 200px; height: 200px; background: var(--plum);  top: 10%;  right: 25%; }
+
+    /* Floating paint dots */
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(8deg); }
+    }
+
+    .ws-hero-inner { position: relative; z-index: 2; padding: 3rem 2rem; }
+    .ws-tag {
+      display: inline-block;
+      background: var(--rust);
+      color: white;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      margin-bottom: 1.8rem;
+      border-radius: 2px;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .ws-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      color: white;
+      line-height: 1.05;
+      font-weight: 700;
+      animation: fadeUp 0.7s 0.25s both;
+    }
+    .ws-hero h1 em { font-style: italic; color: var(--gold); }
+    .ws-hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.55);
+      max-width: 540px;
+      margin: 1.5rem auto 0;
+      line-height: 1.75;
+      font-weight: 300;
+      animation: fadeUp 0.7s 0.4s both;
+    }
+
+    /* Squiggly divider */
+    .squiggle { display: block; width: 100%; overflow: hidden; line-height: 0; }
+    .squiggle svg { display: block; }
+
+    /* ── INTRO STRIP ── */
+    .intro-strip {
+      background: var(--rust);
+      padding: 3rem 5rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .intro-pill {
+      display: flex; align-items: center; gap: 0.8rem;
+      color: white;
+    }
+    .intro-pill-icon {
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.15);
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    .intro-pill-text strong { display: block; font-size: 0.95rem; font-weight: 600; }
+    .intro-pill-text span { font-size: 0.8rem; opacity: 0.75; }
+
+    /* ── SECTION UTILS ── */
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--rust);
+      font-weight: 500; margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15; font-weight: 700;
+    }
+    .handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--rust);
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    /* ── WORKSHOP CARDS ── */
+    #workshops { padding: 6rem 5rem; }
+    .workshops-intro {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 4rem;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .workshops-intro p {
+      max-width: 480px;
+      color: var(--muted); font-size: 1rem;
+      line-height: 1.8; font-weight: 300;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .workshop-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .workshop-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+
+    /* Color accent bar top of each card */
+    .card-accent { height: 6px; }
+    .accent-rust  { background: var(--rust); }
+    .accent-teal  { background: var(--teal); }
+    .accent-plum  { background: var(--plum); }
+
+    .card-img {
+      width: 100%; height: 220px;
+      object-fit: cover; display: block;
+    }
+    .card-img-placeholder {
+      width: 100%; height: 220px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .bg-rust-soft  { background: #fdf0ea; }
+    .bg-teal-soft  { background: #e8f4f4; }
+    .bg-plum-soft  { background: #f4eef2; }
+
+    .card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+
+    .card-category {
+      font-size: 0.68rem; letter-spacing: 0.16em;
+      text-transform: uppercase; font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .cat-rust { color: var(--rust); }
+    .cat-teal { color: var(--teal); }
+    .cat-plum { color: var(--plum); }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      line-height: 1.2; margin-bottom: 0.8rem;
+    }
+    .card-desc {
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.7; font-weight: 300;
+      flex: 1; margin-bottom: 1.5rem;
+    }
+    .card-meta {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .meta-tag {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; font-weight: 500;
+      background: var(--cream); color: var(--muted);
+      padding: 0.3rem 0.7rem; border-radius: 2px;
+    }
+    .card-footer {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding-top: 1.2rem;
+      border-top: 1.5px solid var(--warm);
+    }
+    .card-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700;
+      line-height: 1;
+    }
+    .card-price span { font-size: 0.8rem; font-family: 'DM Sans', sans-serif; color: var(--muted); font-weight: 400; display: block; margin-top: 0.15rem; }
+
+    /* Book Now button — this is where Stripe Payment Link goes */
+    .book-btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      border: none; cursor: pointer;
+      transition: filter 0.2s, transform 0.2s;
+      border-radius: 2px;
+    }
+    .book-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-rust { background: var(--rust); }
+    .btn-teal { background: var(--teal); }
+    .btn-plum { background: var(--plum); }
+
+    /* SOLD OUT state */
+    .book-btn.sold-out {
+      background: var(--warm);
+      color: var(--muted);
+      cursor: default;
+      pointer-events: none;
+    }
+    .sold-out-badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--ink); color: white;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-weight: 600;
+      padding: 0.3rem 0.7rem;
+    }
+
+    /* ── PRIVATE EVENTS BANNER ── */
+    .private-banner {
+      margin: 0 5rem 6rem;
+      background: var(--ink);
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: center; gap: 3rem;
+      padding: 3.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .private-banner::before {
+      content: '🎨';
+      position: absolute; right: 220px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem; opacity: 0.06;
+    }
+    .private-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: white; line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+    .private-banner h2 em { font-style: italic; color: var(--gold); }
+    .private-banner p { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.7; max-width: 480px; }
+    .private-banner-cta {
+      display: inline-block;
+      padding: 1rem 2.2rem;
+      background: var(--gold);
+      color: var(--ink); font-weight: 600;
+      font-size: 0.85rem; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: filter 0.2s;
+      flex-shrink: 0;
+    }
+    .private-banner-cta:hover { filter: brightness(1.08); }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: white; padding: 6rem 5rem; }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2rem; margin-top: 4rem;
+    }
+    .step {
+      position: relative; padding-left: 0;
+    }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem; font-weight: 700;
+      color: var(--warm); line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; margin-bottom: 0.6rem;
+    }
+    .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+    .step-connector {
+      position: absolute; top: 2rem; right: -1rem;
+      width: 2rem; height: 2px; background: var(--warm);
+    }
+    .step:last-child .step-connector { display: none; }
+
+    /* Stripe callout */
+    .stripe-note {
+      margin-top: 3.5rem;
+      padding: 1.5rem 2rem;
+      background: var(--cream);
+      border-left: 4px solid var(--gold);
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .stripe-note-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .stripe-note h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .stripe-note p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .stripe-note a { color: var(--rust); }
+
+    /* ── FAQ ── */
+    #faq { padding: 6rem 5rem; background: var(--cream); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
+    .faq-item {
+      background: white; padding: 1.8rem 2rem;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .faq-item.open { border-left-color: var(--rust); }
+    .faq-q {
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 1rem;
+      font-weight: 500; font-size: 0.95rem;
+    }
+    .faq-arrow {
+      font-size: 1.2rem; transition: transform 0.25s;
+      color: var(--rust); flex-shrink: 0;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.75; font-weight: 300;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-top: 1rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.4);
+      padding: 2rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { font-family: 'Playfair Display', serif; color: white; font-size: 1.1rem; }
+    .footer-logo span { color: var(--rust); font-style: italic; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: white; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.2rem; }
+      section, #workshops, #how, #faq { padding: 4rem 1.5rem; }
+      .intro-strip { padding: 2rem 1.5rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .step-connector { display: none; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .private-banner { margin: 0 1.5rem 4rem; padding: 2.5rem; grid-template-columns: 1fr; }
+      .workshops-intro { flex-direction: column; }
+      footer { flex-direction: column; text-align: center; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="jessica-art.html">Jessica <span>K.</span></a>
+    <ul>
+      <li><a href="jessica-art.html#portfolio">Work</a></li>
+      <li><a href="jessica-art.html#about">About</a></li>
+      <li><a href="jessica-art.html#services">Services</a></li>
+      <li><a href="workshops.html" class="active">Workshops</a></li>
+      <li><a href="jessica-art.html#contact">Commission</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="ws-hero">
+    <!-- Glow blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <!-- Floating paint dots -->
+    <div class="dot" style="width:14px;height:14px;background:#c4613a;top:22%;left:12%;animation-delay:0s;opacity:0.7;"></div>
+    <div class="dot" style="width:9px;height:9px;background:#c9a84c;top:60%;left:8%;animation-delay:1.2s;opacity:0.6;"></div>
+    <div class="dot" style="width:18px;height:18px;background:#3d8b8b;top:35%;right:10%;animation-delay:0.7s;opacity:0.65;"></div>
+    <div class="dot" style="width:11px;height:11px;background:#7b4f6e;top:70%;right:18%;animation-delay:2s;opacity:0.6;"></div>
+    <div class="dot" style="width:7px;height:7px;background:#c9a84c;top:15%;right:35%;animation-delay:1.5s;opacity:0.5;"></div>
+    <div class="ws-hero-inner">
+      <span class="ws-tag">✦ Now Booking 2025 ✦</span>
+      <h1>Learn. Pour.<br><em>Make a mess.</em></h1>
+      <p class="ws-hero-sub">Fun, hands-on art workshops for all ages and skill levels — led by a working Texas muralist who believes the process is the whole point.</p>
+    </div>
+  </header>
+
+  <!-- SQUIGGLE DIVIDER -->
+  <div class="squiggle">
+    <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;">
+      <path d="M0,20 C120,40 240,0 360,20 C480,40 600,0 720,20 C840,40 960,0 1080,20 C1200,40 1320,0 1440,20 L1440,40 L0,40 Z" fill="#c4613a"/>
+    </svg>
+  </div>
+
+  <!-- INTRO STRIP -->
+  <div class="intro-strip">
+    <div class="intro-pill">
+      <div class="intro-pill-icon">🎨</div>
+      <div class="intro-pill-text">
+        <strong>All supplies included</strong>
+        <span>Just show up ready to create</span>
+      </div>
+    </div>
+    <div class="intro-pill">
+      <div class="intro-pill-icon">👨‍👩‍👧</div>
+      <div class="intro-pill-text">
+        <strong>All skill levels welcome</strong>
+        <span>First-timer or seasoned hobbyist</span>
+      </div>
+    </div>
+    <div class="intro-pill">
+      <div class="intro-pill-icon">💳</div>
+      <div class="intro-pill-text">
+        <strong>Secure online payment</strong>
+        <span>Reserve your spot instantly</span>
+      </div>
+    </div>
+    <div class="intro-pill">
+      <div class="intro-pill-icon">📍</div>
+      <div class="intro-pill-text">
+        <strong>Round Rock, TX</strong>
+        <span>Private events available anywhere</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSHOP CARDS — driven by Google Sheet -->
+  <section id="workshops">
+    <div class="workshops-intro">
+      <div>
+        <p class="section-label">Upcoming Workshops</p>
+        <h2 class="section-title">Pick your pour.</h2>
+        <span class="handwritten">Something for everyone ↓</span>
+      </div>
+      <p>All workshops are small-group, hands-on experiences. You'll leave with a finished piece of art — and probably a few paint-stained memories too.</p>
+    </div>
+
+    <!-- Cards are injected here by JavaScript from Google Sheet -->
+    <div class="cards-grid" id="cards-grid">
+      <!-- Loading state -->
+      <div id="cards-loading" style="grid-column:1/-1;text-align:center;padding:4rem 0;color:var(--muted);font-size:0.95rem;">
+        Loading workshops…
+      </div>
+    </div>
+
+    <div id="cards-empty" style="display:none;text-align:center;padding:4rem 0;">
+      <p style="color:var(--muted);font-size:1rem;">No workshops scheduled right now — check back soon or <a href="jessica-art.html#contact" style="color:var(--rust);">get in touch</a> about private events.</p>
+    </div>
+  </section>
+
+  <!-- PRIVATE EVENTS BANNER -->
+  <div class="private-banner">
+    <div>
+      <h2>Want a <em>private</em> event?</h2>
+      <p>Birthdays, bachelorettes, team-building, school groups — Jessica brings the supplies, the instruction, and the good vibes directly to your venue. Minimum 8 guests, fully custom themes available.</p>
+    </div>
+    <a href="jessica-art.html#contact" class="private-banner-cta">Request Private Event →</a>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <p class="section-label">The Process</p>
+    <h2 class="section-title">From "I've never painted before"<br>to "I made that."</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Pick your workshop</h3>
+        <p>Browse the sessions above, pick the one that sounds most fun, and choose a date that works for you.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Reserve your spot</h3>
+        <p>Click "Book Now" to pay securely via Stripe. You'll get an instant email confirmation with all the details.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Show up & create</h3>
+        <p>Just bring yourself (and maybe an old shirt). All paint, canvas, and supplies are ready for you when you arrive.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Take your art home</h3>
+        <p>Your finished piece goes home with you — dry, signed, and ready to hang. No two are ever the same.</p>
+      </div>
+    </div>
+
+    <!-- Stripe info callout -->
+    <div class="stripe-note">
+      <div class="stripe-note-icon">🔒</div>
+      <div>
+        <h4>Payments are processed securely via Stripe</h4>
+        <p>When you click "Book Now," you'll be taken to a secure Stripe-hosted checkout page. Jessica never sees your card details. Stripe accepts all major credit/debit cards and Apple Pay. Questions about payment? <a href="jessica-art.html#contact">Get in touch</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <p class="section-label">Questions</p>
+    <h2 class="section-title">Good things to know.</h2>
+    <div class="faq-grid">
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What should I wear? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Something you don't mind getting paint on! We provide aprons but acrylic paint has a way of finding its way onto things. Old clothes or casual wear is perfect.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What's your cancellation policy? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Life happens — cancellations made 48+ hours before a workshop receive a full credit toward a future session. Cancellations within 48 hours are non-refundable, but you're welcome to send someone in your place.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do I need any experience? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Absolutely not. Most workshop guests have never picked up a paintbrush as an adult — and that's exactly who these sessions are designed for. Jessica meets everyone where they are.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I buy a spot as a gift? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Yes! Purchase a spot normally and simply forward the confirmation email to the lucky person. Or reach out via the contact page for a gift card option.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Where are workshops held? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Currently in Round Rock, TX. Exact address is provided in your confirmation email after booking. Private events can be held at your chosen venue.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I book a private session for my team or party? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Absolutely — private events are Jessica's favorite! Minimum 8 people. Reach out through the contact page and she'll put together a custom proposal including pricing, themes, and logistics.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Jessica <span>K.</span></div>
+    <p>© 2025 Jessica K. · Murals & Commissioned Art · Round Rock, TX</p>
+    <div style="display:flex;gap:1.5rem;">
+      <a href="https://instagram.com/heartandsolart" target="_blank" rel="noopener">Instagram</a>
+      <a href="jessica-art.html#portfolio">Portfolio</a>
+      <a href="jessica-art.html#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // GOOGLE SHEET CONFIG
+    // 1. Create a Google Sheet using the template (see SETUP-GUIDE.md)
+    // 2. File → Share → Publish to web → CSV → Sheet1 → Publish
+    // 3. Copy the published CSV URL and paste it below
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const SHEET_CSV_URL = 'YOUR_GOOGLE_SHEET_CSV_URL';
+
+    // Color themes cycling through the three brand colors
+    const THEMES = [
+      { accent: 'accent-rust', cat: 'cat-rust', btn: 'btn-rust' },
+      { accent: 'accent-teal', cat: 'cat-teal', btn: 'btn-teal' },
+      { accent: 'accent-plum', cat: 'cat-plum', btn: 'btn-plum' },
+    ];
+
+    // Parse CSV text into array of row objects keyed by header
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      return lines.slice(1).map(line => {
+        // Handle commas inside quoted fields
+        const cols = [];
+        let cur = '', inQuote = false;
+        for (const ch of line) {
+          if (ch === '"') { inQuote = !inQuote; }
+          else if (ch === ',' && !inQuote) { cols.push(cur.trim()); cur = ''; }
+          else { cur += ch; }
+        }
+        cols.push(cur.trim());
+        return Object.fromEntries(headers.map((h, i) => [h, (cols[i] || '').replace(/^"|"$/g, '')]));
+      });
+    }
+
+    // Build a single workshop card from a row
+    function buildCard(row, index) {
+      const theme = THEMES[index % THEMES.length];
+      const isSoldOut = row.status?.toLowerCase() === 'sold out';
+      const isHidden  = row.status?.toLowerCase() === 'hidden';
+      if (isHidden) return null;
+
+      const imgHtml = row.image
+        ? `<img src="${row.image}" alt="${row.title}" class="card-img" loading="lazy" />`
+        : `<div class="card-img-placeholder bg-${theme.btn.replace('btn-','')+'-soft'}">${row.emoji || '🎨'}</div>`;
+
+      const soldOutBadge = isSoldOut
+        ? `<div class="sold-out-badge">Sold Out</div>` : '';
+
+      const bookBtn = isSoldOut
+        ? `<a class="book-btn sold-out">Sold Out</a>`
+        : `<a href="${row.stripe_link || '#'}" class="book-btn ${theme.btn}" target="_blank" rel="noopener">Book Now →</a>`;
+
+      // Build meta tags from optional columns
+      const metaTags = [
+        row.schedule  ? `<span class="meta-tag">📅 ${row.schedule}</span>`  : '',
+        row.capacity  ? `<span class="meta-tag">👥 Max ${row.capacity}</span>` : '',
+        row.duration  ? `<span class="meta-tag">⏱ ${row.duration}</span>`   : '',
+        row.ages      ? `<span class="meta-tag">👤 ${row.ages}</span>`       : '',
+        '<span class="meta-tag">🎨 All supplies included</span>',
+      ].join('');
+
+      return `
+        <div class="workshop-card">
+          ${soldOutBadge}
+          <div class="card-accent ${theme.accent}"></div>
+          ${imgHtml}
+          <div class="card-body">
+            <p class="card-category ${theme.cat}">${row.category || 'Workshop'}</p>
+            <h3 class="card-title">${row.title}</h3>
+            <p class="card-desc">${row.description}</p>
+            <div class="card-meta">${metaTags}</div>
+            <div class="card-footer">
+              <div class="card-price">
+                $${row.price}
+                <span>per person</span>
+              </div>
+              ${bookBtn}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // Fetch and render all workshops from the sheet
+    async function loadWorkshops() {
+      const grid    = document.getElementById('cards-grid');
+      const loading = document.getElementById('cards-loading');
+      const empty   = document.getElementById('cards-empty');
+
+      try {
+        const res  = await fetch(SHEET_CSV_URL);
+        const text = await res.text();
+        const rows = parseCSV(text).filter(r => r.title); // skip blank rows
+
+        loading.remove();
+
+        const cards = rows.map((r, i) => buildCard(r, i)).filter(Boolean);
+
+        if (cards.length === 0) {
+          empty.style.display = 'block';
+        } else {
+          grid.innerHTML = cards.join('');
+          // Trigger scroll fade-in on new cards
+          grid.querySelectorAll('.workshop-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(22px)';
+            el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+            observer.observe(el);
+          });
+        }
+      } catch (err) {
+        loading.innerHTML = 'Could not load workshops. Please try refreshing.';
+        console.error('Sheet fetch error:', err);
+      }
+    }
+
+    // ── FAQ ACCORDION ──
+    function toggleFaq(el) {
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+
+    // ── SCROLL FADE-IN ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.step, .faq-item, .intro-pill').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+      observer.observe(el);
+    });
+
+    // Kick off sheet load
+    loadWorkshops();
+  </script>
+
+</body>
+</html>
