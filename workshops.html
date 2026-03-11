@@ -256,8 +256,9 @@
       padding: 0.3rem 0.7rem; border-radius: 2px;
     }
     .card-footer {
-      display: flex; justify-content: space-between;
-      align-items: center;
+      display: flex; flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
       padding-top: 1.2rem;
       border-top: 1.5px solid var(--warm);
     }
@@ -622,8 +623,8 @@
   </section>
 
   <!-- WAITLIST MODAL -->
-  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;align-items:center;justify-content:center;">
-    <div style="background:white;max-width:480px;width:90%;padding:2.5rem;position:relative;">
+  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;max-width:480px;width:90%;padding:2.5rem;position:relative;">
       <button onclick="closeWaitlist()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
       <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:0.5rem;">Join the Waitlist</p>
       <h3 id="modal-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:0.5rem;"></h3>
@@ -905,7 +906,7 @@
       document.getElementById('wl-success').style.display = 'none';
       document.getElementById('wl-error').style.display = 'none';
       const modal = document.getElementById('waitlist-modal');
-      modal.style.display = 'flex';
+      modal.style.display = 'block';
     }
 
     function closeWaitlist() {
