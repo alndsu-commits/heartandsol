@@ -623,24 +623,30 @@
   </section>
 
   <!-- WAITLIST MODAL -->
-  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;max-width:480px;width:90%;padding:2.5rem;position:relative;">
-      <button onclick="closeWaitlist()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;max-width:480px;width:90%;padding:2.5rem;">
+      <button id="wl-close" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
       <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:0.5rem;">Join the Waitlist</p>
       <h3 id="modal-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:0.5rem;"></h3>
       <p id="modal-price" style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;"></p>
-      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">Once 10 people sign up, Jessica will reach out to everyone on the list to lock in a date that works for the group.</p>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">Once 10 people sign up, Jessica will reach out to lock in a date. Fill in your details and hit submit — it'll open your email app with everything pre-filled.</p>
       <div style="margin-bottom:1rem;">
         <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Your Name</label>
         <input id="wl-name" type="text" placeholder="Jane Smith" style="width:100%;padding:0.85rem 1rem;border:1.5px solid var(--warm);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" />
       </div>
-      <div style="margin-bottom:1.5rem;">
-        <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Email Address</label>
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Your Email</label>
         <input id="wl-email" type="email" placeholder="jane@email.com" style="width:100%;padding:0.85rem 1rem;border:1.5px solid var(--warm);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" />
       </div>
-      <button id="wl-submit" onclick="submitWaitlist()" style="width:100%;background:var(--rust);color:white;border:none;padding:1.1rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Add Me to the List →</button>
-      <div id="wl-success" style="display:none;margin-top:1rem;padding:1rem;background:#e8f5e9;color:#2e7d32;font-size:0.9rem;">✓ You're on the list! Jessica will be in touch when the class fills up.</div>
-      <div id="wl-error" style="display:none;margin-top:1rem;padding:1rem;background:#fdecee;color:#c62828;font-size:0.9rem;">Something went wrong — please email <a href="/cdn-cgi/l/email-protection#f49e98919d939c9f86959280b49399959d98da979b99" style="color:var(--rust);"><span class="__cf_email__" data-cfemail="b2d8ded7dbd5dad9c0d3d4c6f2d5dfd3dbde9cd1dddf">[email&#160;protected]</span></a> directly.</div>
+      <div style="margin-bottom:1.2rem;">
+        <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Phone Number <span style="text-transform:none;letter-spacing:0;font-weight:300;">(optional)</span></label>
+        <input id="wl-phone" type="tel" placeholder="(512) 555-0123" style="width:100%;padding:0.85rem 1rem;border:1.5px solid var(--warm);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" />
+      </div>
+      <label style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;cursor:pointer;font-size:0.88rem;color:var(--muted);">
+        <input id="wl-mailinglist" type="checkbox" checked style="width:18px;height:18px;accent-color:var(--rust);cursor:pointer;flex-shrink:0;" />
+        Add me to Jessica's mailing list for future workshops &amp; events
+      </label>
+      <button id="wl-submit" style="width:100%;background:var(--rust);color:white;border:none;padding:1.1rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Add Me to the List →</button>
     </div>
   </div>
 
@@ -882,63 +888,85 @@
       observer.observe(el);
     });
 
+
+    // Toast notification
+    function showToast(msg) {
+      var toast = document.getElementById('copy-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'copy-toast';
+        toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1612;color:white;padding:0.9rem 2rem;font-family:\'DM Sans\',sans-serif;font-size:0.9rem;font-weight:500;border-radius:3px;z-index:99999;opacity:0;transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      setTimeout(function() { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; }, 10);
+      setTimeout(function() { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; }, 2500);
+    }
+
     // Copy link to clipboard
     function copyLink(btn) {
-      navigator.clipboard.writeText('https://heartandsol.cloud/workshops.html').then(() => {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '✓ Copied!';
-        btn.style.background = '#2e7d32';
-        setTimeout(() => { btn.innerHTML = orig; btn.style.background = '#1a1612'; }, 2000);
-      });
+      var url = 'https://heartandsol.cloud/workshops.html';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+          showToast('✓ Link copied to clipboard!');
+        }).catch(function() { fallbackCopy(url); });
+      } else {
+        fallbackCopy(url);
+      }
+    }
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try { document.execCommand('copy'); showToast('✓ Link copied to clipboard!'); }
+      catch(e) { showToast('Copy failed — try long-pressing the link'); }
+      document.body.removeChild(ta);
     }
 
     // Waitlist modal
-    let currentClass = '';
-    let currentPrice = 0;
+    var currentClass = '';
+    var currentPrice = 0;
 
     function openWaitlist(className, price) {
       currentClass = className;
       currentPrice = price;
       document.getElementById('modal-title').textContent = className;
-      document.getElementById('modal-price').textContent = '$' + price + ' per person';
+      document.getElementById('modal-price').textContent = '$' + price + (className === 'Date Night Pour Painting' ? ' per couple' : ' per person');
       document.getElementById('wl-name').value = '';
       document.getElementById('wl-email').value = '';
-      document.getElementById('wl-success').style.display = 'none';
-      document.getElementById('wl-error').style.display = 'none';
-      const modal = document.getElementById('waitlist-modal');
-      modal.style.display = 'block';
+      document.getElementById('waitlist-modal').style.display = 'block';
     }
 
-    function closeWaitlist() {
+    document.getElementById('wl-close').addEventListener('click', function() {
       document.getElementById('waitlist-modal').style.display = 'none';
-    }
+    });
 
-    async function submitWaitlist() {
-      const name = document.getElementById('wl-name').value.trim();
-      const email = document.getElementById('wl-email').value.trim();
-      if (!name || !email) { alert('Please fill in your name and email.'); return; }
+    document.getElementById('waitlist-modal').addEventListener('click', function(e) {
+      if (e.target === this) this.style.display = 'none';
+    });
 
-      const btn = document.getElementById('wl-submit');
-      btn.textContent = 'Submitting…';
-      btn.disabled = true;
+    document.getElementById('wl-submit').addEventListener('click', function() {
+      var name = document.getElementById('wl-name').value.trim();
+      var email = document.getElementById('wl-email').value.trim();
+      var phone = document.getElementById('wl-phone').value.trim();
+      var mailingList = document.getElementById('wl-mailinglist').checked;
+      if (!name || !email) { alert('Please enter your name and email.'); return; }
+      var subject = encodeURIComponent('Waitlist: ' + currentClass);
+      var body = encodeURIComponent(
+        'Hi Jessica,\n\nI\'d love to join the waitlist for ' + currentClass + ' ($' + currentPrice + ').\n\n' +
+        'Name: ' + name + '\n' +
+        'Email: ' + email + '\n' +
+        (phone ? 'Phone: ' + phone + '\n' : '') +
+        'Mailing list: ' + (mailingList ? 'Yes, please add me!' : 'No thanks') + '\n\n' +
+        'Please let me know when you have a date!'
+      );
+      window.location.href = 'mailto:jleighkraft' + '@' + 'gmail.com?subject=' + subject + '&body=' + body;
+    });
 
-      try {
-        const res = await fetch('https://formsubmit.co/ajax/jleighkraft@gmail.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name: name,
-            email: email,
-            _subject: 'Workshop Waitlist: ' + currentClass,
-            message: name + ' (' + email + ') joined the waitlist for ' + currentClass + ' ($' + currentPrice + '/person)',
-          })
-        });
-        if (res.ok) {
-          document.getElementById('wl-success').style.display = 'block';
-          btn.textContent = 'You\'re on the list!';
-        } else {
-          throw new Error();
-        }
-      } catch {
-        document.getElementById('wl-error').style.display = 'block';
-        btn.textCon
+  </script>
+
+</body>
+</html>
