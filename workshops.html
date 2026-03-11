@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Workshops — Jessica K. Art</title>
+  <title>Workshops — Heart and Sol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet" />
   <style>
@@ -443,13 +443,13 @@
 
   <!-- NAV -->
   <nav>
-    <a class="nav-logo" href="jessica-art.html">Jessica <span>K.</span></a>
+    <a class="nav-logo" href="index.html">Heart and <span>Sol</span></a>
     <ul>
-      <li><a href="jessica-art.html#portfolio">Work</a></li>
-      <li><a href="jessica-art.html#about">About</a></li>
-      <li><a href="jessica-art.html#services">Services</a></li>
+      <li><a href="index.html#portfolio">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#services">Services</a></li>
       <li><a href="workshops.html" class="active">Workshops</a></li>
-      <li><a href="jessica-art.html#contact">Commission</a></li>
+      <li><a href="index.html#contact">Commission</a></li>
     </ul>
   </nav>
 
@@ -506,35 +506,112 @@
     <div class="intro-pill">
       <div class="intro-pill-icon">📍</div>
       <div class="intro-pill-text">
-        <strong>Round Rock, TX</strong>
+        <strong>Leander, TX</strong>
         <span>Private events available anywhere</span>
       </div>
     </div>
   </div>
 
-  <!-- WORKSHOP CARDS — driven by Google Sheet -->
+  <!-- WORKSHOP CARDS -->
   <section id="workshops">
     <div class="workshops-intro">
       <div>
         <p class="section-label">Upcoming Workshops</p>
         <h2 class="section-title">Pick your pour.</h2>
-        <span class="handwritten">Something for everyone ↓</span>
+        <span class="handwritten">Join the waitlist ↓</span>
       </div>
-      <p>All workshops are small-group, hands-on experiences. You'll leave with a finished piece of art — and probably a few paint-stained memories too.</p>
+      <p>Classes run once we hit 10 signups — join the waitlist and we'll lock in a date together. All supplies included, all skill levels welcome.</p>
     </div>
 
-    <!-- Cards are injected here by JavaScript from Google Sheet -->
     <div class="cards-grid" id="cards-grid">
-      <!-- Loading state -->
-      <div id="cards-loading" style="grid-column:1/-1;text-align:center;padding:4rem 0;color:var(--muted);font-size:0.95rem;">
-        Loading workshops…
-      </div>
-    </div>
 
-    <div id="cards-empty" style="display:none;text-align:center;padding:4rem 0;">
-      <p style="color:var(--muted);font-size:1rem;">No workshops scheduled right now — check back soon or <a href="jessica-art.html#contact" style="color:var(--rust);">get in touch</a> about private events.</p>
+      <!-- DATE NIGHT POUR -->
+      <div class="workshop-card">
+        <div class="card-accent accent-rust"></div>
+        <div class="card-img-placeholder" style="background:#f5ede8;display:flex;align-items:center;justify-content:center;font-size:3rem;min-height:180px;">🥂</div>
+        <div class="card-body">
+          <p class="card-category cat-rust">Date Night</p>
+          <h3 class="card-title">Date Night Pour Painting</h3>
+          <p class="card-desc">You and your person, a canvas each, and two hours of guided fluid art. No experience needed — just show up and enjoy the process together. Wine welcome.</p>
+          <div class="card-meta">
+            <span class="meta-tag">👥 Min 10 people (5 couples)</span>
+            <span class="meta-tag">⏱ ~2 hours</span>
+            <span class="meta-tag">🎨 All supplies included</span>
+            <span class="meta-tag">📅 Date set when full</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">$75 <span>per couple</span></div>
+            <button class="book-btn btn-rust" onclick="openWaitlist('Date Night Pour Painting', 75)">Join Waitlist →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOMS & MIMOSAS -->
+      <div class="workshop-card">
+        <div class="card-accent accent-teal"></div>
+        <div class="card-img-placeholder" style="background:#e8f3f3;display:flex;align-items:center;justify-content:center;font-size:3rem;min-height:180px;">🌸</div>
+        <div class="card-body">
+          <p class="card-category cat-teal">Morning Event</p>
+          <h3 class="card-title">Moms & Mimosas Morning</h3>
+          <p class="card-desc">A relaxed morning pour painting class with one mimosa included. Bring your girlfriends, your sister, your mom — anyone who deserves a morning off.</p>
+          <div class="card-meta">
+            <span class="meta-tag">👥 Min 10 people</span>
+            <span class="meta-tag">⏱ ~2 hours</span>
+            <span class="meta-tag">🥂 One mimosa included</span>
+            <span class="meta-tag">📅 Date set when full</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">$65 <span>per person</span></div>
+            <button class="book-btn btn-teal" onclick="openWaitlist('Moms & Mimosas Morning', 65)">Join Waitlist →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLUEBONNET SPRING POUR -->
+      <div class="workshop-card">
+        <div class="card-accent accent-plum"></div>
+        <div class="card-img-placeholder" style="background:#f0ebf4;display:flex;align-items:center;justify-content:center;font-size:3rem;min-height:180px;">🌿</div>
+        <div class="card-body">
+          <p class="card-category cat-plum">Seasonal</p>
+          <h3 class="card-title">Bluebonnet Spring Pour</h3>
+          <p class="card-desc">Celebrate Texas spring with a bluebonnet-inspired fluid pour painting. Perfect for all ages — bring your kids, your neighbors, or just yourself.</p>
+          <div class="card-meta">
+            <span class="meta-tag">👥 Min 10 people</span>
+            <span class="meta-tag">⏱ ~1.5 hours</span>
+            <span class="meta-tag">🎨 All supplies included</span>
+            <span class="meta-tag">📅 Date set when full</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">$55 <span>per person</span></div>
+            <button class="book-btn btn-plum" onclick="openWaitlist('Bluebonnet Spring Pour', 55)">Join Waitlist →</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
+
+  <!-- WAITLIST MODAL -->
+  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;align-items:center;justify-content:center;">
+    <div style="background:white;max-width:480px;width:90%;padding:2.5rem;position:relative;">
+      <button onclick="closeWaitlist()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+      <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:0.5rem;">Join the Waitlist</p>
+      <h3 id="modal-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:0.5rem;"></h3>
+      <p id="modal-price" style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;"></p>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">Once 10 people sign up, Jessica will reach out to everyone on the list to lock in a date that works for the group.</p>
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Your Name</label>
+        <input id="wl-name" type="text" placeholder="Jane Smith" style="width:100%;padding:0.85rem 1rem;border:1.5px solid var(--warm);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" />
+      </div>
+      <div style="margin-bottom:1.5rem;">
+        <label style="display:block;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:0.4rem;">Email Address</label>
+        <input id="wl-email" type="email" placeholder="jane@email.com" style="width:100%;padding:0.85rem 1rem;border:1.5px solid var(--warm);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" />
+      </div>
+      <button id="wl-submit" onclick="submitWaitlist()" style="width:100%;background:var(--rust);color:white;border:none;padding:1.1rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Add Me to the List →</button>
+      <div id="wl-success" style="display:none;margin-top:1rem;padding:1rem;background:#e8f5e9;color:#2e7d32;font-size:0.9rem;">✓ You're on the list! Jessica will be in touch when the class fills up.</div>
+      <div id="wl-error" style="display:none;margin-top:1rem;padding:1rem;background:#fdecee;color:#c62828;font-size:0.9rem;">Something went wrong — please email <a href="mailto:jleighkraft@gmail.com" style="color:var(--rust);">jleighkraft@gmail.com</a> directly.</div>
+    </div>
+  </div>
 
   <!-- PRIVATE EVENTS BANNER -->
   <div class="private-banner">
@@ -542,7 +619,7 @@
       <h2>Want a <em>private</em> event?</h2>
       <p>Birthdays, bachelorettes, team-building, school groups — Jessica brings the supplies, the instruction, and the good vibes directly to your venue. Minimum 8 guests, fully custom themes available.</p>
     </div>
-    <a href="jessica-art.html#contact" class="private-banner-cta">Request Private Event →</a>
+    <a href="index.html#contact" class="private-banner-cta">Request Private Event →</a>
   </div>
 
   <!-- HOW IT WORKS -->
@@ -580,7 +657,7 @@
       <div class="stripe-note-icon">🔒</div>
       <div>
         <h4>Payments are processed securely via Stripe</h4>
-        <p>When you click "Book Now," you'll be taken to a secure Stripe-hosted checkout page. Jessica never sees your card details. Stripe accepts all major credit/debit cards and Apple Pay. Questions about payment? <a href="jessica-art.html#contact">Get in touch</a>.</p>
+        <p>When you click "Book Now," you'll be taken to a secure Stripe-hosted checkout page. Jessica never sees your card details. Stripe accepts all major credit/debit cards and Apple Pay. Questions about payment? <a href="index.html#contact">Get in touch</a>.</p>
       </div>
     </div>
   </section>
@@ -626,12 +703,12 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">Jessica <span>K.</span></div>
+    <div class="footer-logo">Heart and <span>Sol</span></div>
     <p>© 2025 Jessica K. · Murals & Commissioned Art · Round Rock, TX</p>
     <div style="display:flex;gap:1.5rem;">
       <a href="https://instagram.com/heartandsolart" target="_blank" rel="noopener">Instagram</a>
-      <a href="jessica-art.html#portfolio">Portfolio</a>
-      <a href="jessica-art.html#contact">Contact</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#contact">Contact</a>
     </div>
   </footer>
 
@@ -774,8 +851,63 @@
       observer.observe(el);
     });
 
-    // Kick off sheet load
-    loadWorkshops();
+    // Waitlist modal
+    let currentClass = '';
+    let currentPrice = 0;
+
+    function openWaitlist(className, price) {
+      currentClass = className;
+      currentPrice = price;
+      document.getElementById('modal-title').textContent = className;
+      document.getElementById('modal-price').textContent = '$' + price + ' per person';
+      document.getElementById('wl-name').value = '';
+      document.getElementById('wl-email').value = '';
+      document.getElementById('wl-success').style.display = 'none';
+      document.getElementById('wl-error').style.display = 'none';
+      const modal = document.getElementById('waitlist-modal');
+      modal.style.display = 'flex';
+    }
+
+    function closeWaitlist() {
+      document.getElementById('waitlist-modal').style.display = 'none';
+    }
+
+    async function submitWaitlist() {
+      const name = document.getElementById('wl-name').value.trim();
+      const email = document.getElementById('wl-email').value.trim();
+      if (!name || !email) { alert('Please fill in your name and email.'); return; }
+
+      const btn = document.getElementById('wl-submit');
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/jleighkraft@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            _subject: 'Workshop Waitlist: ' + currentClass,
+            message: name + ' (' + email + ') joined the waitlist for ' + currentClass + ' ($' + currentPrice + '/person)',
+          })
+        });
+        if (res.ok) {
+          document.getElementById('wl-success').style.display = 'block';
+          btn.textContent = 'You\'re on the list!';
+        } else {
+          throw new Error();
+        }
+      } catch {
+        document.getElementById('wl-error').style.display = 'block';
+        btn.textContent = 'Add Me to the List →';
+        btn.disabled = false;
+      }
+    }
+
+    document.getElementById('waitlist-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeWaitlist();
+    });
   </script>
 
 </body>
