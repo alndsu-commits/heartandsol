@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Photos — Heart and Sol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0a0a0a;
+      --white: #ffffff;
+      --grey: #e0e0e0;
+      --gold: #2563eb;
+      --teal: #3d8b8b;
+      --muted: #888888;
+      --success: #2e7d32;
+      --error: #c62828;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1.5px solid var(--grey);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .logo span { color: var(--gold); font-style: italic; }
+
+    .back-link {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .page-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Drop zone */
+    #drop-zone {
+      border: 2.5px dashed var(--grey);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    #drop-zone.dragover {
+      border-color: var(--gold);
+      background: #f0f5ff;
+    }
+
+    #drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .drop-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .drop-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Upload button */
+    #upload-btn {
+      display: none;
+      width: 100%;
+      background: var(--gold);
+      color: white;
+      border: none;
+      padding: 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: opacity 0.2s;
+    }
+
+    #upload-btn:hover { opacity: 0.88; }
+    #upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Selected files preview */
+    #file-list {
+      margin-bottom: 1.5rem;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--grey);
+      font-size: 0.9rem;
+    }
+
+    .file-thumb {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--grey);
+    }
+
+    .file-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-status {
+      font-size: 0.78rem;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .status-pending { color: var(--muted); }
+    .status-uploading { color: var(--teal); }
+    .status-done { color: var(--success); }
+    .status-error { color: var(--error); }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      height: 3px;
+      background: var(--grey);
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+      transition: width 0.2s;
+    }
+
+    /* Results */
+    #results {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f0f7f0;
+      border-left: 3px solid var(--success);
+    }
+
+    #results h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--success);
+    }
+
+    #results p {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .result-url {
+      font-size: 0.75rem;
+      color: var(--muted);
+      word-break: break-all;
+      margin-top: 0.3rem;
+    }
+
+    .result-item {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #c8e6c9;
+    }
+
+    .result-item:last-child { border-bottom: none; }
+
+    /* Tips */
+    .tips {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1.5px solid var(--grey);
+    }
+
+    .tips h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .tip {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .tip-icon { flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">Heart and <span>Sol</span></a>
+    <a class="back-link" href="index.html">← Back to site</a>
+  </header>
+
+  <main>
+    <p class="page-label">Photo Management</p>
+    <h1>Upload New Photos</h1>
+    <p class="subtitle">Drag your photos in below, or tap to pick them from your phone or computer. They'll upload straight to your gallery.</p>
+
+    <div id="drop-zone">
+      <input type="file" id="file-input" accept="image/*" multiple />
+      <div class="drop-icon">🖼️</div>
+      <p class="drop-title">Drop photos here</p>
+      <p class="drop-sub">or tap to choose from your camera roll · JPG, PNG, HEIC</p>
+    </div>
+
+    <div id="file-list"></div>
+
+    <button id="upload-btn">Upload Photos →</button>
+
+    <div id="results">
+      <h3>✓ Photos uploaded!</h3>
+      <div id="results-list"></div>
+      <p style="margin-top:1rem;font-size:0.82rem;color:var(--muted);">Your photos are now live in Cloudinary. To add them to the gallery, share the URLs above with Michael.</p>
+    </div>
+
+    <div class="tips">
+      <h3>A few tips</h3>
+      <div class="tip"><span class="tip-icon">📸</span><span>Best results with high-res photos — at least 1000px wide.</span></div>
+      <div class="tip"><span class="tip-icon">📱</span><span>Works great from your phone. Tap the drop zone to pick straight from your camera roll.</span></div>
+      <div class="tip"><span class="tip-icon">🔒</span><span>Photos go straight to your private Cloudinary account — nobody else can see them until they're added to the gallery.</span></div>
+      <div class="tip"><span class="tip-icon">📋</span><span>After uploading, copy the photo URLs and send them to Michael to add to the gallery.</span></div>
+    </div>
+  </main>
+
+  <script>
+    const CLOUD_NAME = 'joimjsc0';
+    const UPLOAD_PRESET = 'heartandsol';
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+    const uploadBtn = document.getElementById('upload-btn');
+    const results = document.getElementById('results');
+    const resultsList = document.getElementById('results-list');
+
+    let selectedFiles = [];
+
+    // Drag and drop
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      handleFiles(Array.from(e.dataTransfer.files));
+    });
+
+    fileInput.addEventListener('change', function() {
+      handleFiles(Array.from(fileInput.files));
+    });
+
+    function handleFiles(files) {
+      files = files.filter(f => f.type.startsWith('image/'));
+      if (!files.length) return;
+      selectedFiles = files;
+      fileList.innerHTML = '';
+      resultsList.innerHTML = '';
+      results.style.display = 'none';
+
+      files.forEach(function(file, i) {
+        var item = document.createElement('div');
+        item.className = 'file-item';
+        item.id = 'file-' + i;
+
+        var thumb = document.createElement('img');
+        thumb.className = 'file-thumb';
+        thumb.src = URL.createObjectURL(file);
+
+        var name = document.createElement('div');
+        name.className = 'file-name';
+        name.textContent = file.name;
+
+        var statusWrap = document.createElement('div');
+        statusWrap.style.textAlign = 'right';
+
+        var status = document.createElement('div');
+        status.className = 'file-status status-pending';
+        status.textContent = 'Ready';
+
+        var progressWrap = document.createElement('div');
+        progressWrap.className = 'progress-bar-wrap';
+        var progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        progressWrap.appendChild(progressBar);
+
+        statusWrap.appendChild(status);
+        statusWrap.appendChild(progressWrap);
+        item.appendChild(thumb);
+        item.appendChild(name);
+        item.appendChild(statusWrap);
+        fileList.appendChild(item);
+      });
+
+      uploadBtn.style.display = 'block';
+    }
+
+    uploadBtn.addEventListener('click', async function() {
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'Uploading…';
+      var uploaded = [];
+
+      for (var i = 0; i < selectedFiles.length; i++) {
+        var file = selectedFiles[i];
+        var item = document.getElementById('file-' + i);
+        var status = item.querySelector('.file-status');
+        var progressWrap = item.querySelector('.progress-bar-wrap');
+        var progressBar = item.querySelector('.progress-bar');
+
+        status.className = 'file-status status-uploading';
+        status.textContent = 'Uploading…';
+        progressWrap.style.display = 'block';
+
+        try {
+          var url = await uploadToCloudinary(file, progressBar);
+          status.className = 'file-status status-done';
+          status.textContent = '✓ Done';
+          progressBar.style.width = '100%';
+          uploaded.push({ name: file.name, url: url });
+        } catch(e) {
+          status.className = 'file-status status-error';
+          status.textContent = '✗ Failed';
+        }
+      }
+
+      uploadBtn.textContent = 'Upload More Photos →';
+      uploadBtn.disabled = false;
+
+      if (uploaded.length) {
+        results.style.display = 'block';
+        uploaded.forEach(function(u) {
+          var div = document.createElement('div');
+          div.className = 'result-item';
+          div.innerHTML = '<strong>' + u.name + '</strong><div class="result-url">' + u.url + '</div>';
+          resultsList.appendChild(div);
+        });
+      }
+    });
+
+    function uploadToCloudinary(file, progressBar) {
+      return new Promise(function(resolve, reject) {
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload');
+
+        xhr.upload.addEventListener('progress', function(e) {
+          if (e.lengthComputable) {
+            progressBar.style.width = Math.round((e.loaded / e.total) * 100) + '%';
+          }
+        });
+
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            resolve(data.secure_url);
+          } else {
+            reject(new Error('Upload failed'));
+          }
+        };
+
+        xhr.onerror = function() { reject(new Error('Network error')); };
+        xhr.send(formData);
+      });
+    }
+  </script>
+
+</body>
+</html>
